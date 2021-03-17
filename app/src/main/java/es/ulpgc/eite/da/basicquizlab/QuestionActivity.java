@@ -174,7 +174,7 @@ public class QuestionActivity extends AppCompatActivity {
     */
 
     Intent intent = new Intent(this, CheatActivity.class);
-    intent.putExtra(CheatActivity.EXTRA_ANSWER, replyArray[questionIndex]);
+    intent.putExtra(CheatActivity.KEY_EXTRA_ANSWER, replyArray[questionIndex]);
     startActivityForResult(intent, CHEAT_REQUEST);
   }
 
@@ -188,7 +188,7 @@ public class QuestionActivity extends AppCompatActivity {
       if (resultCode == RESULT_OK) {
 
         boolean answerCheated =
-            data.getBooleanExtra(CheatActivity.EXTRA_CHEATED, false);
+            data.getBooleanExtra(CheatActivity.KEY_EXTRA_CHEATED, false);
 
         Log.d(TAG, "answerCheated: " + answerCheated);
 

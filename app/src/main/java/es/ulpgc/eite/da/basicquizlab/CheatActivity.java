@@ -6,20 +6,22 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CheatActivity extends AppCompatActivity {
 
   public static final String TAG = "Quiz.CheatActivity";
 
-  public final static String EXTRA_ANSWER = "EXTRA_ANSWER";
-  public final static String EXTRA_CHEATED = "EXTRA_CHEATED";
+  public final static String KEY_EXTRA_ANSWER = "EXTRA_ANSWER";
+  public final static String KEY_EXTRA_CHEATED = "EXTRA_CHEATED";
 
   private Button noButton, yesButton;
   private TextView answerText;
 
   private int currentAnswer;
   private boolean answerCheated;
+  private boolean yesButtonSelected;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class CheatActivity extends AppCompatActivity {
   }
 
   private void initLayoutData() {
-    currentAnswer = getIntent().getExtras().getInt(EXTRA_ANSWER);
+    currentAnswer = getIntent().getExtras().getInt(KEY_EXTRA_ANSWER);
   }
 
   private void linkLayoutComponents() {
@@ -56,17 +58,26 @@ public class CheatActivity extends AppCompatActivity {
     Log.d(TAG, "answerCheated: " + answerCheated);
 
     Intent intent = new Intent();
-    intent.putExtra(EXTRA_CHEATED, answerCheated);
+    intent.putExtra(KEY_EXTRA_CHEATED, answerCheated);
     setResult(RESULT_OK, intent);
 
     finish();
   }
+
+
 
   @Override
   public void onBackPressed() {
     Log.d(TAG, "onBackPressed()");
 
     returnCheatedStatus();
+  }
+  @Override
+  protected void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+
+    outState.putInt(KEY_EXTRA_ANSWER, currentAnswer);
+    outState.putBoolean(KEY_EXTRA_CHEATED, answerCheated);
   }
 
 
@@ -81,6 +92,7 @@ public class CheatActivity extends AppCompatActivity {
       answerText.setText(R.string.true_text);
 
     }
+    updateLayoutContent();
   }
 
   private void onNoButtonClicked() {
